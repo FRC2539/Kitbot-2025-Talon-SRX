@@ -8,11 +8,11 @@ import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.CANDriveSubsystem;
 
-// Command to run the robot at 1/2 power for 1 second in autonomous
+// Command to run the robot at 1/2 power for 2 seconds and turn for 2 seconds in autonomous
 public class AutoCommand extends Command {
   CANDriveSubsystem driveSubsystem;
   private Timer timer;
-  private double seconds = 1.0;
+  private double timeout = 4.0;
 
   // Constructor. Runs only once when the command is first created.
   public AutoCommand(CANDriveSubsystem driveSubsystem) {
@@ -38,7 +38,18 @@ public class AutoCommand extends Command {
   @Override
   public void execute() {
     // drive at 1/2 speed
-    driveSubsystem.driveArcade(0.5, 0.0);
+    //driveSubsystem.driveArcade(0.5, 0.0);
+
+    if (timer.get() < 2.0) {
+      // Drive forward for 2 seconds
+      driveSubsystem.driveArcade(0.5, 0.0); // 0.5 forward speed, 0.0 turn
+  } else if (timer.get() < 4.0) {
+      // Turn right for 2 seconds
+      driveSubsystem.driveArcade(0.0, 0.5); // 0.0 forward speed, 0.5 turn right
+  } else {
+      // Stop the robot after 4 seconds
+      driveSubsystem.driveArcade(0.0, 0.0);
+  }
   }
 
   // Runs each time the command ends via isFinished or being interrupted.
@@ -54,6 +65,6 @@ public class AutoCommand extends Command {
   public boolean isFinished() {
     // check if timer exceeds seconds, when it has this will return true indicating
     // this command is finished
-    return timer.get() >= seconds;
+    return timer.get() >= timeout;
   }
 }
