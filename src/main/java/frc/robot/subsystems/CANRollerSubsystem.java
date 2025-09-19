@@ -4,6 +4,7 @@
 
 package frc.robot.subsystems;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.RollerConstants;
 import com.revrobotics.spark.SparkMax;
@@ -37,6 +38,12 @@ public class CANRollerSubsystem extends SubsystemBase {
 
   @Override
   public void periodic() {
+    double tempCelsius = rollerMotor.getMotorTemperature();
+    double tempFahrenheit = (tempCelsius * 9/5) + 32;
+
+    SmartDashboard.putNumber("Roller Motor Temperature", tempFahrenheit);
+    SmartDashboard.putNumber("Roller Motor Speed", rollerMotor.getEncoder().getVelocity());
+    SmartDashboard.putNumber("Roller Motor Current", rollerMotor.getOutputCurrent());
   }
 
   /** This is a method that makes the roller spin */

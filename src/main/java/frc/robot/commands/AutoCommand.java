@@ -46,7 +46,7 @@ public class AutoCommand extends Command {
     if (timer.get() < 5.0) {
       // Drive forward for 2 seconds
       driveSubsystem.driveArcade(0.5, 0.0); // 0.5 forward speed, 0.0 turn
-  } else if (timer.get() < 6.0) {
+  } else if (timer.get() >= 5.0 && timer.get() < 7.0) {
       // Turn right for 2 seconds
       //driveSubsystem.driveArcade(0.0, 0.5); // 0.0 forward speed, 0.5 turn right
       driveSubsystem.driveArcade(0.0, 0.0);
