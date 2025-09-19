@@ -54,7 +54,7 @@ public class AutoCommand extends Command {
   } else {
       // Stop the robot after 4 seconds
       driveSubsystem.driveArcade(0.0, 0.0);
-      
+      rollerSubsystem.runRoller(0.0,0.0);
   }
   }
 
@@ -63,6 +63,7 @@ public class AutoCommand extends Command {
   public void end(boolean isInterrupted) {
     // stop drive motors
     driveSubsystem.driveArcade(0.0, 0.0);
+    rollerSubsystem.runRoller(0.0,0.0);
   }
 
   // Runs every cycle while the command is scheduled to check if the command is
