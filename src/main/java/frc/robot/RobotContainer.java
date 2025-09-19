@@ -7,7 +7,6 @@ package frc.robot;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
-//import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.Constants.RollerConstants;
@@ -32,17 +31,12 @@ public class RobotContainer {
   private final CANRollerSubsystem rollerSubsystem = new CANRollerSubsystem();
 
   // The driver's controller
-  //private final Joystick m_driverController = new Joystick(0); // Assuming port 0 for your LogitechController
-
-
-  // The driver's controller
   private final CommandXboxController driverController = new CommandXboxController(
       OperatorConstants.DRIVER_CONTROLLER_PORT);
 
   // The operator's controller
   private final CommandXboxController operatorController = new CommandXboxController(
       OperatorConstants.OPERATOR_CONTROLLER_PORT);
-
 
   // The autonomous chooser
   private final SendableChooser<Command> autoChooser = new SendableChooser<>();
@@ -57,7 +51,7 @@ public class RobotContainer {
     // Set the options to show up in the Dashboard for selecting auto modes. If you
     // add additional auto modes you can add additional lines here with
     // autoChooser.addOption
-    autoChooser.setDefaultOption("Autonomous", new AutoCommand(driveSubsystem));
+    autoChooser.setDefaultOption("Autonomous", new AutoCommand(driveSubsystem, rollerSubsystem));
   }
 
   /**
@@ -77,31 +71,31 @@ public class RobotContainer {
   private void configureBindings() {
     // Set the A button to run the "RollerCommand" command with a fixed
     // value ejecting the gamepiece while the button is held
-
-    // before
     operatorController.a()
         .whileTrue(new RollerCommand(() -> RollerConstants.ROLLER_EJECT_VALUE, () -> 0, rollerSubsystem));
 
+    // Command to run the roller wheels at 30% while the right trigger is held
+    operatorController.rightTrigger()
+        .whileTrue(new RollerCommand(() -> 0.5, () -> 0, rollerSubsystem));
+
     // Set the default command for the drive subsystem to an instance of the
     // DriveCommand with the values provided by the joystick axes on the driver
-    // controller. The Y axis of the controller is inverted so that pushing the
-    // stick away from you (a negative value) drives the robot forwards (a positive
-    // value). Similarly for the X axis where we need to flip the value so the
-    // joystick matches the WPILib convention of counter-clockwise positive
+    // controller.
     driveSubsystem.setDefaultCommand(new DriveCommand(
         () -> -driverController.getLeftY() *
             (driverController.getHID().getRightBumperButton() ? 1 : 0.5),
-        () -> -driverController.getRightX()*
-        (driverController.getHID().getRightBumperButton() ? 1 : 0.6),
+        () -> -driverController.getRightX() *
+            (driverController.getHID().getRightBumperButton() ? 1 : 0.6),
         driveSubsystem));
 
     // Set the default command for the roller subsystem to an instance of
     // RollerCommand with the values provided by the triggers on the operator
-    // controller
-    rollerSubsystem.setDefaultCommand(new RollerCommand(
-        () -> operatorController.getRightTriggerAxis(),
-        () -> operatorController.getLeftTriggerAxis(),
-        rollerSubsystem));
+    // controller.  Must remove default command to use with buttons and triggers.
+    // default command takes precedence and does not end when other buttons are used.
+    // rollerSubsystem.setDefaultCommand(new RollerCommand(
+    //     () -> operatorController.getRightTriggerAxis(),
+    //     () -> operatorController.getLeftTriggerAxis(),
+    //     rollerSubsystem));
   }
 
   /**
@@ -111,5 +105,6 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // An example command will be run in autonomous
-    return autoChooser.getSelected();  }
+    return autoChooser.getSelected();
+  }
 }
