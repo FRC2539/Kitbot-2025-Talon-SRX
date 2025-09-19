@@ -14,7 +14,7 @@ public class AutoCommand extends Command {
   CANDriveSubsystem driveSubsystem;
   CANRollerSubsystem rollerSubsystem;
   private Timer timer;
-  private double timeout = 4.0;
+  private double timeout = 15.0;
 
   // Constructor. Runs only once when the command is first created.
   public AutoCommand(CANDriveSubsystem driveSubsystem, CANRollerSubsystem rollerSubsystem) {
