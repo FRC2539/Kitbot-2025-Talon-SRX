@@ -50,7 +50,7 @@ public class AutoCommand extends Command {
       // Turn right for 2 seconds
       //driveSubsystem.driveArcade(0.0, 0.5); // 0.0 forward speed, 0.5 turn right
       driveSubsystem.driveArcade(0.0, 0.0);
-      rollerSubsystem.runRoller(.3,.0);
+      rollerSubsystem.runRoller(-.3,.0);
   } else {
       // Stop the robot after 4 seconds
       driveSubsystem.driveArcade(0.0, 0.0);

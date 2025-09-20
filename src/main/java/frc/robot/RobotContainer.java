@@ -83,21 +83,30 @@ public class RobotContainer {
     // Set the default command for the drive subsystem to an instance of the
     // DriveCommand with the values provided by the joystick axes on the driver
     // controller.
+    // driveSubsystem.setDefaultCommand(new DriveCommand(
+    //     () -> -driverController.getLeftY() *
+    //         (driverController.getHID().getRightBumperButton() ? 1 : 0.5),
+    //     () -> -driverController.getRightX(),
+    //     driveSubsystem));
+
     driveSubsystem.setDefaultCommand(new DriveCommand(
         () -> -driverController.getLeftY() *
             (driverController.getHID().getRightBumperButton() ? 1 : 0.5),
-        () -> -driverController.getRightX() *
-            (driverController.getHID().getRightBumperButton() ? 1 : 0.6),
+        () -> -driverController.getRightTriggerAxis()*
+        (driverController.getHID().getRightBumperButton() ? 1 : 0.6),
         driveSubsystem));
+
+        
+ // 0.0 forward speed, 0.5 turn right
 
     // Set the default command for the roller subsystem to an instance of
     // RollerCommand with the values provided by the triggers on the operator
     // controller.  Must remove default command to use with buttons and triggers.
     // default command takes precedence and does not end when other buttons are used.
-    // rollerSubsystem.setDefaultCommand(new RollerCommand(
-    //     () -> operatorController.getRightTriggerAxis(),
-    //     () -> operatorController.getLeftTriggerAxis(),
-    //     rollerSubsystem));
+    rollerSubsystem.setDefaultCommand(new RollerCommand(
+        () -> operatorController.getRightTriggerAxis(),
+        () -> operatorController.getLeftTriggerAxis(),
+        rollerSubsystem));
   }
 
   /**
