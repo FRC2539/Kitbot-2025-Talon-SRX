@@ -90,10 +90,10 @@ public class RobotContainer {
     //     driveSubsystem));
 
     driveSubsystem.setDefaultCommand(new DriveCommand(
-        () -> -driverController.getLeftY() *
-            (driverController.getHID().getRightBumperButton() ? 1 : 0.5),
+      () -> -driverController.getLeftY()*
+      (driverController.getHID().getRightBumperButton() ? 1 : 0.6),
         () -> -driverController.getRightTriggerAxis()*
-        (driverController.getHID().getRightBumperButton() ? 1 : 0.6),
+        (driverController.getHID().getRightBumperButton() ? 1 : 0.8),
         driveSubsystem));
 
         
